@@ -21,6 +21,23 @@ class DiscordClient(discord.Client):
 
   async def on_message(self, message):
     print("Message from {0.author}: {0.content}".format(message))
+    if len(message.attachments) == 0:
+      return
+    
+    # Contains attachments, check if any audio files
+    audioFiles = [message for message in message.attachments if message.filename[-3:] == "wav"]
+    if len(audioFiles) == 0:
+      print("No audio files found..")
+      return
+    print("Audio files found..")
+
+    # TODO: Save audio files and send to SERaaS API
+    channel = message.channel
+    for message in audioFiles:
+      await message.save("files/")
+      await channel.send("Saving file `{0.filename}`..".format(message))
+
+    # TODO: Remove saved audio files
 
 """ Initializing the bot connection using the bot token """
 client = DiscordClient()
