@@ -12,6 +12,35 @@
 
 import discord
 import discordBotToken
+import requests
+import seraasURLHandler
+
+""" Location to store temporary audio files at """
+
+TEMPORARY_AUDIO_FILENAME = "tempfile.wav"
+
+""" Function to handle making an API call to SERaaS """
+
+async def seraasCall(audioFile):
+  # Code generated using Postman, such a good tool !
+  apiEndpointURL = seraasURLHandler.endpoint
+
+  if apiEndpointURL is not None:
+    print("Making API request to SERaaS at '%s'.." % apiEndpointURL)
+
+    response = requests.request(
+      "POST",
+      apiEndpointURL,
+      headers = { "Content-Type": "application/x-www-form-urlencoded" },
+      data = {},
+      files = [ ("file", open(audioFile, "rb")) ]
+    )
+
+    print("Got response from SERaaS:")
+    print(response.text.encode('utf8'))
+    print("fin. API request operation.")
+  else:
+    print("A seraasURLHandler.py file is required for making the API request. Please read README.md for more information.")
 
 """ Class to handle Discord events for the bot """
 
@@ -25,17 +54,20 @@ class DiscordClient(discord.Client):
       return
     
     # Contains attachments, check if any audio files
-    audioFiles = [message for message in message.attachments if message.filename[-3:] == "wav"]
+    audioFiles = [message for message in message.attachments if message.filename[-3:] == "wav"] # List comprehension
     if len(audioFiles) == 0:
       print("No audio files found..")
       return
     print("Audio files found..")
 
-    # TODO: Save audio files and send to SERaaS API
     channel = message.channel
-    for message in audioFiles:
-      await message.save("files/")
-      await channel.send("Saving file `{0.filename}`..".format(message))
+    message = audioFiles[0] # Users can only send one attachment at once
+    print(message)
+
+    # Save audio file and send to SERaaS API
+    await message.save(TEMPORARY_AUDIO_FILENAME)
+    await channel.send("Saving file %s to %s.." % (message.filename, TEMPORARY_AUDIO_FILENAME))
+    await seraasCall(TEMPORARY_AUDIO_FILENAME)
 
     # TODO: Remove saved audio files
 
