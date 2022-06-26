@@ -2,7 +2,7 @@
 
 This is a demo implementing a playground use case for Speech Emotion Recognition. The demo is a Python script that loads a Discord bot to accept audio files from Discord message attachments and send API requests to SERaaS which then outputs emotions back if an audio file is retrieved.
 
-SERaaS is a Final Year Project for [Waterford Institute of Technology](https://www.wit.ie/) developed by [Wei Kit Wong](https://github.com/andyAndyA), which aims to provide a Speech Emotion Recognition as a Web API service. This is achieved by Machine Learning to build the SER classification model; the [User Management Service](https://github.com/SERaaS/SERaaS-User-Management-Service) to provide authentication features, and the [API Service](https://github.com/SERaaS/SERaaS-API-Service) to deploy it all as a service.
+SERaaS is a Final Year Project for [Waterford Institute of Technology](https://www.wit.ie/) developed by Wei Kit Wong, which aims to provide a Speech Emotion Recognition as a Web API service. This is achieved by Machine Learning to build the SER classification model; the [User Management Service](https://github.com/SERaaS/SERaaS-User-Management-Service) to provide authentication features, and the [API Service](https://github.com/SERaaS/SERaaS-API-Service) to deploy it all as a service.
 
 ## General
 
